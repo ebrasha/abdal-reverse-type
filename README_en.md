@@ -6,13 +6,31 @@
   <img src="scrsh.gif" alt="Abdal Reverse Type Demo">
 </div>
 
+<div align="center">
+  <img src="scr2.png" alt="Abdal Reverse Type Demo">
+</div>
+
+
+
 [🇮🇷 نسخه فارسی](README_fa.md)
+
 ## 📝 Description
-A browser extension that allows you to convert selected text between Persian and English characters. This extension works anywhere in your browser, including:
-- Regular text on web pages
-- Input fields
-- Textareas
-- Text editors (like Gmail)
+
+Your head is down, your keyboard is in English, but you're typing in Persian? Don't worry! 😎  
+With just one click, this add-on fixes everything! No need to delete and rewrite. Fast, smart, and super useful! 🚀🔥
+
+### ✅ What does this add-on do?
+A browser extension that allows you to convert selected text between Persian and English characters.
+
+This add-on works everywhere in the browser, including:
+- 🖥 **Regular text on web pages**
+- 🔤 **Input fields**
+- 📝 **Text areas**
+- ✉️ **Text editors (like Gmail)**
+
+⚡ Fast, easy, and hassle-free! Just one click and everything is fixed! 🚀🔥
+
+
 
 ## 🚀 How to Use
 1. Select any text you want to convert
