@@ -1,4 +1,4 @@
-# Abdal Reverse Type - Persian/English Text Converter
+# Abdal Reverse Type - تبدیل متن فارسی به انگلیسی و برعکس
 
 
 
@@ -6,37 +6,38 @@
   <img src="scrsh.gif" alt="Abdal Reverse Type Demo">
 </div>
 
-[🇮🇷 نسخه فارسی](README_fa.md)
-## 📝 Description
-A browser extension that allows you to convert selected text between Persian and English characters. This extension works anywhere in your browser, including:
-- Regular text on web pages
-- Input fields
-- Textareas
-- Text editors (like Gmail)
+[🇺🇸 English Version](README_en.md)
 
-## 🚀 How to Use
-1. Select any text you want to convert
-2. Right-click on the selected text
-3. Choose "Convert Selected Text"
-4. The text will be automatically converted
+## 📝 توضیحات
+افزونه‌ای برای مرورگر که به شما امکان می‌دهد متن انتخاب شده را بین حروف فارسی و انگلیسی تبدیل کنید. این افزونه در هر جایی از مرورگر کار می‌کند، از جمله:
+- متن عادی در صفحات وب
+- فیلدهای ورودی (Input)
+- جعبه‌های متنی (Textarea)
+- ویرایشگرهای متنی (مثل Gmail)
 
-## ⚙️ Installation
-1. Download the extension from the [Browser Extension Store](https://addons.mozilla.org/firefox/addon/abdal-reverse-type/)
-2. Click on "Install"
-3. Grant the necessary permissions
-4. Start using the extension!
+## 🚀 نحوه استفاده
+1. متن مورد نظر خود را انتخاب کنید
+2. روی متن انتخاب شده راست کلیک کنید
+3. گزینه "تبدیل متن انتخاب شده" را انتخاب کنید
+4. متن به صورت خودکار تبدیل می‌شود
 
-## 🐛 Reporting Issues
-If you encounter any issues or have configuration problems, please reach out via email at Prof.Shafiei@Gmail.com. You can also report issues on GitLab or GitHub.
+## ⚙️ نصب
+1. افزونه را از [فروشگاه افزونه‌های مرورگر](https://addons.mozilla.org/firefox/addon/abdal-reverse-type/) دانلود کنید
+2. روی دکمه "نصب" کلیک کنید
+3. به افزونه اجازه دسترسی‌های لازم را بدهید
+4. از افزونه استفاده کنید!
 
-## ❤️ Donation
-If you find this project helpful and would like to support further development, please consider making a donation:
-- [Donate Here](https://alphajet.ir/abdal-donation)
+## 🐛 گزارش مشکلات
+اگر با مشکلی مواجه شدید یا در پیکربندی مشکل دارید، لطفاً از طریق ایمیل Prof.Shafiei@Gmail.com با ما در تماس باشید. همچنین می‌توانید مشکلات را در GitLab یا GitHub گزارش دهید.
 
-## 🤵 Programmer
-Handcrafted with Passion by **Ebrahim Shafiei (EbraSha)**
-- **E-Mail**: Prof.Shafiei@Gmail.com
-- **Telegram**: [@ProfShafiei](https://t.me/ProfShafiei)
+## ❤️ حمایت مالی
+اگر این پروژه برای شما مفید بود و مایل به حمایت از توسعه بیشتر هستید، لطفاً در نظر داشته باشید که کمک مالی کنید:
+- [اینجا اهدا کنید](https://alphajet.ir/abdal-donation)
 
-## 📜 License
-This project is licensed under the GPLv2 or later License. 
+## 🤵 برنامه‌نویس
+ساخته شده با عشق توسط **ابراهیم شفیعی (EbraSha)**
+- **ایمیل**: Prof.Shafiei@Gmail.com
+- **تلگرام**: [@ProfShafiei](https://t.me/ProfShafiei)
+
+## 📜 مجوز
+این پروژه تحت مجوز GPLv2 or later منتشر شده است. 
