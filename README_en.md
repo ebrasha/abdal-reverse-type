@@ -39,7 +39,7 @@ This add-on works everywhere in the browser, including:
 4. The text will be automatically converted
 
 ## ⚙️ Installation
-1. Download the extension from the [Browser Extension Store](https://addons.mozilla.org/firefox/addon/abdal-reverse-type/)
+1. Download the extension from the [Browser Extension Store](https://addons.mozilla.org/en-US/firefox/addon/abdal-reverse-type/)
 2. Click on "Install"
 3. Grant the necessary permissions
 4. Start using the extension!
