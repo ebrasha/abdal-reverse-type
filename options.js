@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Save settings
 document.getElementById('save').addEventListener('click', function() {
     const shortcut = document.getElementById('shortcut').value;
-    
+
     browser.storage.sync.set({
         shortcut: shortcut
     }, function() {
@@ -35,9 +35,9 @@ document.getElementById('save').addEventListener('click', function() {
         status.textContent = 'تنظیمات با موفقیت ذخیره شد.';
         status.className = 'status success';
         status.style.display = 'block';
-        
+
         setTimeout(function() {
             status.style.display = 'none';
         }, 2000);
     });
-}); 
+});

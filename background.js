@@ -35,7 +35,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     console.log('Context menu clicked:', info);
     if (info.menuItemId === "convertText") {
         console.log('Convert text menu item clicked');
-        
+
         // Send message to content script
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             if (tabs[0]) {
@@ -68,4 +68,4 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             }
         });
     }
-}); 
+});

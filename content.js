@@ -19,81 +19,131 @@ console.log('Content script loading...');
 
 // Mapping of English to Persian characters
 const englishToPersian = {
-    'a': 'ش',
-    'b': 'ذ',
-    'c': 'ز',
-    'd': 'ی',
+    // Row 1
+    'q': 'ض',
+    'w': 'ص',
     'e': 'ث',
+    'r': 'ق',
+    't': 'ف',
+    'y': 'غ',
+    'u': 'ع',
+    'i': 'ه',
+    'o': 'خ',
+    'p': 'ح',
+    '[': 'ج',
+    ']': 'چ',
+    '\\': '\\',  // معمولا \ را بدون تغییر نگه می‌داریم
+
+    // Row 2
+    'a': 'ش',
+    's': 'س',
+    'd': 'ی',
     'f': 'ب',
     'g': 'ل',
     'h': 'ا',
-    'i': 'ه',
     'j': 'ت',
     'k': 'ن',
     'l': 'م',
-    'm': 'پ',
-    'n': 'د',
-    'o': 'خ',
-    'p': 'ح',
-    'q': 'ض',
-    'r': 'ق',
-    's': 'س',
-    't': 'ف',
-    'u': 'ع',
-    'v': 'ر',
-    'w': 'ص',
-    'x': 'ط',
-    'y': 'غ',
+    ';': 'ک',
+    '\'': 'گ',
+
+    // Row 3
     'z': 'ظ',
-    '[': 'ج',
-    ']': 'چ',
-    '\\': 'پ',
+    'x': 'ط',
+    'c': 'ز',
+    'v': 'ر',
+    'b': 'ذ',
+    'n': 'د',
+    'm': 'پ',
     ',': 'و',
-    '.': '.',
-    'C': 'ژ'
+    '.': '؟',   // نقطه‌ی پرسش
+    '/': '/',    // اسلش بدون تغییر
+
+    // ارقام
+    '0': '۰',
+    '1': '۱',
+    '2': '۲',
+    '3': '۳',
+    '4': '۴',
+    '5': '۵',
+    '6': '۶',
+    '7': '۷',
+    '8': '۸',
+    '9': '۹'
 };
 
 // Mapping of Persian to English characters
 const persianToEnglish = {
-    'ش': 'a',
-    'ذ': 'b',
-    'ز': 'c',
-    'ی': 'd',
+    // Letters
+    'ض': 'q',
+    'ص': 'w',
     'ث': 'e',
+    'ق': 'r',
+    'ف': 't',
+    'غ': 'y',
+    'ع': 'u',
+    'ه': 'i',
+    'خ': 'o',
+    'ح': 'p',
+    'ج': '[',
+    'چ': ']',
+    'ش': 'a',
+    'س': 's',
+    'ی': 'd',
     'ب': 'f',
     'ل': 'g',
     'ا': 'h',
-    'ه': 'i',
     'ت': 'j',
     'ن': 'k',
     'م': 'l',
-    'پ': '\\',
-    'د': 'n',
-    'خ': 'o',
-    'ح': 'p',
-    'ض': 'q',
-    'ق': 'r',
-    'س': 's',
-    'ف': 't',
-    'ع': 'u',
-    'ر': 'v',
-    'ص': 'w',
-    'ط': 'x',
-    'غ': 'y',
+    'ک': ';',   // added kaf
+    'گ': '\'',  // added gaf
     'ظ': 'z',
-    'ج': '[',
-    'چ': ']',
-    'و': ',',
-    '.': '.',
-    'ژ': 'C'
-};
+    'ط': 'x',
+    'ز': 'c',
+    'ر': 'v',
+    'ذ': 'b',
+    'د': 'n',
+    'پ': 'm',
+    'و': ',',   // Persian vav → comma
+    'پ': '\\',  // if you prefer backslash for pe
 
+    // Special Persian letter
+    'ژ': 'C',
+
+    // Digits
+    '۰': '0',
+    '۱': '1',
+    '۲': '2',
+    '۳': '3',
+    '۴': '4',
+    '۵': '5',
+    '۶': '6',
+    '۷': '7',
+    '۸': '8',
+    '۹': '9',
+
+    // Punctuation
+    '؛': ';',   // Persian semicolon
+    '؟': '?',   // Persian question mark
+    '،': ',',   // Persian comma
+    '.': '.',   // dot
+    ':': ':',
+    '/': '/',
+    '\\': '\\',
+    '-': '-',
+    '_': '_',
+    '(': '(',
+    ')': ')',
+    '\'': '\'',
+    '"': '"'
+};
 // Function to convert text
 function convertText(text) {
     console.log('Converting text:', text);
     let result = '';
     let isEnglish = false;
-    
+
     // Check if text is English or Persian
     for (let char of text) {
         if (englishToPersian[char.toLowerCase()]) {
@@ -106,7 +156,7 @@ function convertText(text) {
             break;
         }
     }
-    
+
     // Convert based on detected language
     for (let char of text) {
         if (isEnglish) {
@@ -115,7 +165,7 @@ function convertText(text) {
             result += persianToEnglish[char] || char;
         }
     }
-    
+
     console.log('Converted result:', result);
     return result;
 }
@@ -129,18 +179,18 @@ function replaceTextInInput(element, convertedText) {
         const text = element.value;
         const before = text.substring(0, start);
         const after = text.substring(end);
-        
+
         // Set the new value
         element.value = before + convertedText + after;
-        
+
         // Create and dispatch events
         element.dispatchEvent(new Event('input', { bubbles: true }));
         element.dispatchEvent(new Event('change', { bubbles: true }));
-        
+
         // Update selection
         element.setSelectionRange(start, start + convertedText.length);
         element.focus();
-        
+
         return true;
     } catch (error) {
         console.error('Error in replaceTextInInput:', error);
@@ -153,19 +203,19 @@ function replaceTextInDocument(convertedText) {
     try {
         console.log('Replacing text in document');
         const selection = window.getSelection();
-        
+
         if (selection.rangeCount > 0) {
             const range = selection.getRangeAt(0);
             range.deleteContents();
             range.insertNode(document.createTextNode(convertedText));
-            
+
             // Update selection
             const newRange = document.createRange();
             newRange.setStart(range.startContainer, range.startOffset);
             newRange.setEnd(range.startContainer, range.startOffset + convertedText.length);
             selection.removeAllRanges();
             selection.addRange(newRange);
-            
+
             return true;
         }
         return false;
@@ -181,15 +231,15 @@ function handleTextReplacement(selectedText) {
         console.log('Handling text replacement for:', selectedText);
         const convertedText = convertText(selectedText);
         const activeElement = document.activeElement;
-        
+
         // Handle input/textarea elements
         if (activeElement instanceof HTMLInputElement || activeElement instanceof HTMLTextAreaElement) {
             return replaceTextInInput(activeElement, convertedText);
         }
-        
+
         // Handle regular text
         return replaceTextInDocument(convertedText);
-        
+
     } catch (error) {
         console.error('Error in handleTextReplacement:', error);
         return false;
@@ -199,12 +249,12 @@ function handleTextReplacement(selectedText) {
 // Listen for messages from background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log('Message received in content script:', request);
-    
+
     if (request.action === "convertText") {
         try {
             const selectedText = request.selectedText || window.getSelection().toString();
             console.log('Selected text:', selectedText);
-            
+
             if (selectedText) {
                 const success = handleTextReplacement(selectedText);
                 console.log('Text replacement success:', success);
@@ -218,7 +268,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse({ success: false, error: error.message });
         }
     }
-    
+
     return true; // Keep the message channel open for async response
 });
 
@@ -227,4 +277,4 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initialize);
 } else {
     initialize();
-} 
+}
