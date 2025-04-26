@@ -17,6 +17,34 @@
 
 console.log('Content script loading...');
 
+// Default keyboard settings
+let keyboardSettings = {
+    peKeyMapping: 'm', // Default pe mapping ('m')
+    // Add other keyboard layout settings here as needed
+};
+
+// Load settings from storage
+function loadSettings() {
+    console.log('Loading keyboard settings...');
+    if (typeof browser !== 'undefined') {
+        browser.storage.sync.get(['peKeyMapping'], function(result) {
+            if (result.peKeyMapping) {
+                keyboardSettings.peKeyMapping = result.peKeyMapping;
+                console.log('Loaded pe key mapping:', keyboardSettings.peKeyMapping);
+                updateMappings();
+            }
+        });
+    } else if (typeof chrome !== 'undefined') {
+        chrome.storage.sync.get(['peKeyMapping'], function(result) {
+            if (result.peKeyMapping) {
+                keyboardSettings.peKeyMapping = result.peKeyMapping;
+                console.log('Loaded pe key mapping:', keyboardSettings.peKeyMapping);
+                updateMappings();
+            }
+        });
+    }
+}
+
 // Mapping of English to Persian characters
 const englishToPersian = {
     // Row 1
@@ -54,10 +82,11 @@ const englishToPersian = {
     'v': 'ر',
     'b': 'ذ',
     'n': 'د',
-    'm': 'پ',
+    'm': 'پ',  // Default mapping for pe
     ',': 'و',
     '.': '؟',   // نقطه‌ی پرسش
     '/': '/',    // اسلش بدون تغییر
+    '`': 'پ',   // Alternative mapping for pe on some keyboards
 
     // ارقام
     '0': '۰',
@@ -96,17 +125,16 @@ const persianToEnglish = {
     'ت': 'j',
     'ن': 'k',
     'م': 'l',
-    'ک': ';',   // added kaf
-    'گ': '\'',  // added gaf
+    'ک': ';',   // kaf
+    'گ': '\'',  // gaf
     'ظ': 'z',
     'ط': 'x',
     'ز': 'c',
     'ر': 'v',
     'ذ': 'b',
     'د': 'n',
-    'پ': 'm',
+    'پ': 'm',   // Default mapping for pe
     'و': ',',   // Persian vav → comma
-    'پ': '\\',  // if you prefer backslash for pe
 
     // Special Persian letter
     'ژ': 'C',
@@ -138,6 +166,40 @@ const persianToEnglish = {
     '\'': '\'',
     '"': '"'
 };
+
+// Function to update mappings based on settings
+function updateMappings() {
+    console.log('Updating mappings with settings:', keyboardSettings);
+    
+    // Reset default Pe mapping
+    englishToPersian['m'] = 'پ';
+    englishToPersian['\\'] = '\\';
+    englishToPersian['`'] = 'پ';
+    persianToEnglish['پ'] = 'm';
+    
+    // Update based on settings
+    switch(keyboardSettings.peKeyMapping) {
+        case '\\':
+            englishToPersian['\\'] = 'پ'; // Set backslash to pe
+            englishToPersian['m'] = 'م';  // Remap m to meem
+            persianToEnglish['پ'] = '\\'; // Set pe to backslash
+            persianToEnglish['م'] = 'm';  // Remap meem to m
+            break;
+        case '`':
+            englishToPersian['`'] = 'پ';  // Set backtick to pe
+            englishToPersian['m'] = 'م';  // Remap m to meem
+            persianToEnglish['پ'] = '`';  // Set pe to backtick
+            persianToEnglish['م'] = 'm';  // Remap meem to m
+            break;
+        default: // 'm' is default
+            englishToPersian['m'] = 'پ';  // Set m to pe
+            persianToEnglish['پ'] = 'm';  // Set pe to m
+            break;
+    }
+    
+    console.log('Updated mappings successfully');
+}
+
 // Function to convert text
 function convertText(text) {
     console.log('Converting text:', text);
@@ -246,9 +308,81 @@ function handleTextReplacement(selectedText) {
     }
 }
 
+// Setup keyboard shortcut listener
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        // Log the key event for debugging
+        console.debug('Key pressed:', e.key, 'modifiers:', 
+            (e.ctrlKey ? 'Ctrl ' : '') + 
+            (e.altKey ? 'Alt ' : '') + 
+            (e.shiftKey ? 'Shift ' : '') + 
+            (e.metaKey ? 'Meta ' : ''));
+            
+        // Don't handle shortcuts in form fields unless modifiers are used
+        if ((e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') && 
+            !(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
+            return;
+        }
+        
+        // Skip if only modifier keys are pressed without any other key
+        if (e.key === 'Control' || e.key === 'Alt' || e.key === 'Shift' || e.key === 'Meta') {
+            return;
+        }
+
+        // Only send if at least one modifier key is pressed
+        if (!(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
+            return;
+        }
+
+        const keyEvent = {
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+            shift: e.shiftKey,
+            meta: e.metaKey,
+            key: e.key // Keep original case for consistent matching
+        };
+
+        console.log('Sending key event to background:', keyEvent);
+
+        // Send the key event to the background script
+        chrome.runtime.sendMessage({
+            action: 'keyEvent',
+            keyEvent: keyEvent
+        }, function(response) {
+            if (chrome.runtime.lastError) {
+                console.error('Error sending key event:', chrome.runtime.lastError);
+                return;
+            }
+            
+            if (response && response.matched) {
+                console.log('Shortcut matched! Preventing default behavior');
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+    }, true); // Use capture phase to get events before they reach other handlers
+}
+
 // Listen for messages from background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log('Message received in content script:', request);
+
+    // Handle settings updates from the background script
+    if (request.action === "updateSettings") {
+        console.log('Received settings update:', request.settings);
+        
+        // Update pe key mapping if provided
+        if (request.settings && request.settings.peKeyMapping) {
+            keyboardSettings.peKeyMapping = request.settings.peKeyMapping;
+            console.log('Updated pe key mapping setting:', keyboardSettings.peKeyMapping);
+            
+            // Update keyboard mappings based on new settings
+            updateMappings();
+        }
+        
+        sendResponse({ success: true, message: 'Settings updated in content script' });
+        return true;
+    }
 
     if (request.action === "convertText") {
         try {
@@ -260,8 +394,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 console.log('Text replacement success:', success);
                 sendResponse({ success: success });
             } else {
-                console.error('No text selected');
-                sendResponse({ success: false, error: 'No text selected' });
+                console.warn('No text selected for conversion');
+                
+                // Try to execute text replacement anyway if we're in an editable field
+                const activeElement = document.activeElement;
+                if (activeElement instanceof HTMLInputElement || activeElement instanceof HTMLTextAreaElement) {
+                    // If in an input/textarea, try to convert the text at cursor or selected text
+                    const start = activeElement.selectionStart;
+                    const end = activeElement.selectionEnd;
+                    
+                    if (start !== end) {
+                        // We have some selected text in the form field
+                        const selectedFieldText = activeElement.value.substring(start, end);
+                        const success = handleTextReplacement(selectedFieldText);
+                        console.log('Form field text replacement success:', success);
+                        sendResponse({ success: success });
+                    } else {
+                        console.error('No text selected in form field');
+                        sendResponse({ success: false, error: 'No text selected in form field' });
+                    }
+                } else {
+                    console.error('No text selected and not in editable field');
+                    sendResponse({ success: false, error: 'No text selected' });
+                }
             }
         } catch (error) {
             console.error('Error in message handler:', error);
@@ -271,6 +426,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     return true; // Keep the message channel open for async response
 });
+
+// Initialize
+function initialize() {
+    console.log('Initializing content script...');
+    loadSettings();
+    setupKeyboardShortcuts();
+}
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {

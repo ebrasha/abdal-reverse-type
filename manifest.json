@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
   "name": "Abdal Reverse Type",
-  "version": "3.3",
+  "version": "4.1",
   "author": "Ebrahim Shafiei (EbraSha)",
   "homepage_url": "https://github.com/ebrasha/abdal-reverse-type",
-  "description": "Convert selected text between English and Persian characters using right-click menu",
+  "description": "Convert text between English and Persian characters with right-click menu, custom keyboard shortcuts, and multiple keyboard layout support",
   "browser_specific_settings": {
     "gecko": {
       "id": "abdal-reverse-type@Prof.Shafiei"
@@ -43,5 +43,9 @@
       "96": "icons/icon96.png"
     },
     "default_title": "Abdal Reverse Type"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
   }
 }
