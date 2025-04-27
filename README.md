@@ -11,9 +11,7 @@
   <img src="scr2.png" alt="Abdal Reverse Type Demo">
 </div>
 
-<div align="center">
-  <img src="option.jpg" alt="Abdal Reverse Type Demo">
-</div>
+
 
 [🇺🇸 English Version](README_en.md)
 
@@ -61,6 +59,9 @@
 4. از افزونه استفاده کنید!
 
 ## 🔧 پیکربندی
+<div align="center">
+  <img src="option.jpg" alt="Abdal Reverse Type Demo">
+</div>
 1. روی آیکون افزونه در نوار ابزار مرورگر خود کلیک کنید
 2. چیدمان کیبورد دلخواه خود را برای حرف "پ" فارسی تنظیم کنید
 3. کلید میانبر دلخواه خود را پیکربندی کنید

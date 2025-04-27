@@ -64,6 +64,9 @@ Configure your preferred layout in the settings!
 4. Start using the extension!
 
 ## 🔧 Configuration
+<div align="center">
+  <img src="option.jpg" alt="Abdal Reverse Type Demo">
+</div>
 1. Click on the extension icon in your browser toolbar
 2. Set your preferred keyboard layout for the Persian "پ" character
 3. Configure your preferred keyboard shortcut
