@@ -119,6 +119,7 @@ const persianToEnglish = {
     'ش': 'a',
     'س': 's',
     'ی': 'd',
+    'ئ': 'm',
     'ب': 'f',
     'ل': 'g',
     'ا': 'h',
@@ -138,6 +139,11 @@ const persianToEnglish = {
 
     // Special Persian letter
     'ژ': 'C',
+    'ي': 'X',
+    'ة': 'Z',
+    'إ': 'B',
+    'أ': 'N',
+    'ء': 'M',
 
     // Digits
     '۰': '0',
