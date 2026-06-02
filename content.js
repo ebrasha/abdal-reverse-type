@@ -19,7 +19,7 @@ console.log('Content script loading...');
 
 // Default keyboard settings
 let keyboardSettings = {
-    peKeyMapping: 'm', // Default pe mapping ('m')
+    peKeyMapping: '\\', // Default Pe mapping uses backslash; m must stay mapped to ئ.
     // Add other keyboard layout settings here as needed
 };
 
@@ -60,7 +60,7 @@ const englishToPersian = {
     'p': 'ح',
     '[': 'ج',
     ']': 'چ',
-    '\\': '\\',  // معمولا \ را بدون تغییر نگه می‌داریم
+    '\\': 'پ',
 
     // Row 2
     'a': 'ش',
@@ -82,11 +82,11 @@ const englishToPersian = {
     'v': 'ر',
     'b': 'ذ',
     'n': 'د',
-    'm': 'پ',  // Default mapping for pe
+    'm': 'ئ',
     ',': 'و',
-    '.': '؟',   // نقطه‌ی پرسش
-    '/': '/',    // اسلش بدون تغییر
-    '`': 'پ',   // Alternative mapping for pe on some keyboards
+    '.': '؟',
+    '/': '/',
+    '`': '`',
 
     // ارقام
     '0': '۰',
@@ -134,7 +134,7 @@ const persianToEnglish = {
     'ر': 'v',
     'ذ': 'b',
     'د': 'n',
-    'پ': 'm',   // Default mapping for pe
+    'پ': '\\',   // Default mapping for pe
     'و': ',',   // Persian vav → comma
 
     // Special Persian letter
@@ -177,29 +177,26 @@ const persianToEnglish = {
 function updateMappings() {
     console.log('Updating mappings with settings:', keyboardSettings);
     
-    // Reset default Pe mapping
-    englishToPersian['m'] = 'پ';
-    englishToPersian['\\'] = '\\';
-    englishToPersian['`'] = 'پ';
-    persianToEnglish['پ'] = 'm';
+    // Reset standard fixed keys before applying the configurable Pe key.
+    englishToPersian['l'] = 'م';
+    englishToPersian['m'] = 'ئ';
+    englishToPersian['\\'] = 'پ';
+    englishToPersian['`'] = '`';
+    persianToEnglish['م'] = 'l';
+    persianToEnglish['ئ'] = 'm';
+    persianToEnglish['پ'] = '\\';
     
     // Update based on settings
     switch(keyboardSettings.peKeyMapping) {
-        case '\\':
-            englishToPersian['\\'] = 'پ'; // Set backslash to pe
-            englishToPersian['m'] = 'م';  // Remap m to meem
-            persianToEnglish['پ'] = '\\'; // Set pe to backslash
-            persianToEnglish['م'] = 'm';  // Remap meem to m
-            break;
         case '`':
-            englishToPersian['`'] = 'پ';  // Set backtick to pe
-            englishToPersian['m'] = 'م';  // Remap m to meem
-            persianToEnglish['پ'] = '`';  // Set pe to backtick
-            persianToEnglish['م'] = 'm';  // Remap meem to m
+            englishToPersian['\\'] = '\\';
+            englishToPersian['`'] = 'پ';
+            persianToEnglish['پ'] = '`';
             break;
-        default: // 'm' is default
-            englishToPersian['m'] = 'پ';  // Set m to pe
-            persianToEnglish['پ'] = 'm';  // Set pe to m
+        case '\\':
+        default:
+            englishToPersian['\\'] = 'پ';
+            persianToEnglish['پ'] = '\\';
             break;
     }
     

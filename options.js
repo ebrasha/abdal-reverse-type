@@ -18,9 +18,15 @@
 // Browser compatibility helper
 const storage = (typeof browser !== 'undefined') ? browser.storage : chrome.storage;
 const runtime = (typeof browser !== 'undefined') ? browser.runtime : chrome.runtime;
+const DEFAULT_PE_KEY_MAPPING = '\\';
 
 // Global variable to track if a shortcut was loaded from storage
 let shortcutLoadedFromStorage = false;
+
+// Keep legacy saved values from remapping m away from ئ.
+function normalizePeKeyMapping(peKeyMapping) {
+    return peKeyMapping === '`' ? '`' : DEFAULT_PE_KEY_MAPPING;
+}
 
 // Load saved settings
 document.addEventListener('DOMContentLoaded', function() {
@@ -40,7 +46,7 @@ function loadSavedSettings(retryCount = 0) {
         
         try {
             // Set Pe key mapping radio button
-            const peKeyMapping = result.peKeyMapping || 'm'; // Default to 'm'
+            const peKeyMapping = normalizePeKeyMapping(result.peKeyMapping);
             console.log('Setting pe key mapping to:', peKeyMapping);
             
             // Fix the issue with backslash value by using ID selectors instead of value selectors
@@ -48,9 +54,6 @@ function loadSavedSettings(retryCount = 0) {
             
             // Use a more robust way to find the radio button
             switch(peKeyMapping) {
-                case 'm':
-                    radioButton = document.getElementById('pe-m');
-                    break;
                 case '\\':
                     radioButton = document.getElementById('pe-backslash');
                     break;
@@ -199,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const peKeyMapping = radioButton.value;
+        const peKeyMapping = normalizePeKeyMapping(radioButton.value);
         console.log('Saving pe key mapping:', peKeyMapping);
         
         // Get shortcut
@@ -301,13 +304,10 @@ window.addEventListener('load', function() {
             if (result.peKeyMapping) {
                 // Fix the issue with backslash value by using ID selectors instead of value selectors
                 let expectedRadio = null;
-                const peKeyMapping = result.peKeyMapping;
+                const peKeyMapping = normalizePeKeyMapping(result.peKeyMapping);
                 
                 // Use a more robust way to find the radio button
                 switch(peKeyMapping) {
-                    case 'm':
-                        expectedRadio = document.getElementById('pe-m');
-                        break;
                     case '\\':
                         expectedRadio = document.getElementById('pe-backslash');
                         break;
